@@ -15,8 +15,7 @@ Agile was chosen because:
 
 **Actors:**
 - Driver — books and pays for parking
-- Admin — manages lots, floors, slots, views reports
-- Operator — checks vehicles in and out at the gate
+- Admin — manages lots, floors, slots, views reports, and checks vehicles in and out at the gate
 
 **Core Features (MVP):**
 - User registration and login (JWT auth)
@@ -48,7 +47,7 @@ Agile was chosen because:
 |---|---|
 | Abstraction | BaseEntity, IBookable, IPayable, IRepository interfaces |
 | Encapsulation | User password is private; slot status changed only via reserve()/release() |
-| Inheritance | Driver, Admin, Operator all extend User |
+| Inheritance | Driver and Admin extend User |
 | Polymorphism | All observers called via handle(); slots implement IBookable |
 
 **SOLID Principles:**

@@ -7,8 +7,7 @@ A full-stack web application to manage parking lots, slots, bookings, and paymen
 ## What it does
  
 - Drivers can view available slots, book a spot, and pay online
-- Admins can manage parking lots, floors, and slot availability
-- Operators can check vehicles in and out
+- Admins can manage parking lots, floors, slot availability, and check vehicles in and out
 - The system auto-releases unpaid bookings after 15 minutes
  
 ---

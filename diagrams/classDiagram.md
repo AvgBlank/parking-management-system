@@ -19,7 +19,7 @@
 ## Table Definitions
 
 ### USERS
-Primary actor table. Stores drivers, admins, and operators.
+Primary actor table. Stores drivers and admins.
 
 | Column | Type | Constraints | Notes |
 |---|---|---|---|
@@ -28,7 +28,7 @@ Primary actor table. Stores drivers, admins, and operators.
 | email | VARCHAR(255) | UNIQUE, NOT NULL | Login identifier |
 | phone | VARCHAR(20) | NOT NULL | For SMS notifications |
 | password_hash | TEXT | NOT NULL | bcrypt hash — never plain text |
-| role | ENUM | NOT NULL | driver / admin / operator |
+| role | ENUM | NOT NULL | driver / admin |
 | is_active | BOOLEAN | DEFAULT true | Soft disable accounts |
 | created_at | TIMESTAMP | DEFAULT now() | |
 | updated_at | TIMESTAMP | DEFAULT now() | |
@@ -133,7 +133,7 @@ One payment record per booking. Created when driver initiates checkout.
 ## Enum Definitions
 
 ```sql
-CREATE TYPE user_role     AS ENUM ('driver', 'admin', 'operator');
+CREATE TYPE user_role     AS ENUM ('driver', 'admin');
 CREATE TYPE slot_type     AS ENUM ('standard', 'compact', 'handicapped', 'ev_charging');
 CREATE TYPE slot_status   AS ENUM ('available', 'reserved', 'occupied', 'inactive');
 CREATE TYPE booking_status AS ENUM ('pending', 'confirmed', 'active', 'completed', 'cancelled', 'expired');
