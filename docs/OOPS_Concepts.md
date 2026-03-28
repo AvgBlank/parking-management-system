@@ -52,8 +52,7 @@ Child classes reuse and extend parent class behaviour.
 BaseEntity (abstract)
 ├── User
 │   ├── Driver      — adds vehicles list, add_vehicle()
-│   ├── Admin       — overrides notify() to alert all channels
-│   └── Operator    — adds lot_id
+│   └── Admin       — overrides notify() to alert all channels
 ├── ParkingLot
 ├── Floor
 ├── ParkingSlot     — also implements IBookable
@@ -131,7 +130,7 @@ class ParkingSlot(BaseEntity, IBookable):
 |---|---|---|
 | Abstraction | `BaseEntity`, `IBookable`, `IPayable` | `src/models/base.py` |
 | Encapsulation | `User.__password_hash`, `ParkingSlot.status` | `src/models/base.py` |
-| Inheritance | `Driver`, `Admin`, `Operator` extend `User` | `src/models/base.py` |
+| Inheritance | `Driver` and `Admin` extend `User` | `src/models/base.py` |
 | Polymorphism | `notify()` override, Observer `handle()` | `src/models/base.py`, `src/core/observer_pattern.py` |
 | Multiple Inheritance | `ParkingSlot(BaseEntity, IBookable)` | `src/models/base.py` |
 | Design Pattern | Observer Pattern | `src/core/observer_pattern.py` |

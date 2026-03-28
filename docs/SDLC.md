@@ -15,8 +15,7 @@ Agile was chosen because:
 
 **Actors:**
 - Driver — books and pays for parking
-- Admin — manages lots, floors, slots, views reports
-- Operator — checks vehicles in and out at the gate
+- Admin — manages lots, floors, slots, views reports, and checks vehicles in and out at the gate
 
 **Core Features (MVP):**
 - User registration and login (JWT auth)
@@ -48,7 +47,7 @@ Agile was chosen because:
 |---|---|
 | Abstraction | BaseEntity, IBookable, IPayable, IRepository interfaces |
 | Encapsulation | User password is private; slot status changed only via reserve()/release() |
-| Inheritance | Driver, Admin, Operator all extend User |
+| Inheritance | Driver and Admin extend User |
 | Polymorphism | All observers called via handle(); slots implement IBookable |
 
 **SOLID Principles:**
@@ -58,7 +57,7 @@ Agile was chosen because:
 | Open/Closed | New notification channels = new Observer class, no existing code changed |
 | Liskov Substitution | Admin can replace User anywhere User is expected |
 | Interface Segregation | IBookable and IPayable are separate — not every entity needs both |
-| Dependency Inversion | Services depend on IRepository, not concrete SQLAlchemy classes |
+| Dependency Inversion | Services depend on IRepository, not concrete Beanie Document classes |
 
 ---
 
@@ -72,8 +71,7 @@ Agile was chosen because:
 - [x] ER diagram
 
 ### Sprint 2 (Days 4–7): Core Backend
-- [ ] SQLAlchemy ORM models
-- [ ] Alembic migrations
+- [ ] Beanie MongoDB Document models
 - [ ] Auth service (register, login, JWT)
 - [ ] Slot service with Redis cache
 - [ ] Booking service (create, cancel)
