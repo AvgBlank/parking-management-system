@@ -3,7 +3,7 @@
 ```mermaid
 erDiagram
     USERS ||--o{ BOOKINGS : makes
-    USERS ||--o{ VEHICLES : registers
+    USERS ||--o| VEHICLES : registers
     VEHICLES ||--o{ BOOKINGS : "appears in"
     PARKING_LOTS ||--o{ FLOORS : has
     FLOORS ||--o{ SLOTS : contains
@@ -16,7 +16,7 @@ erDiagram
         VARCHAR email "UNIQUE"
         VARCHAR phone
         TEXT password_hash
-        ENUM role
+        ENUM role "driver, admin"
         BOOLEAN is_active
         TIMESTAMP created_at
         TIMESTAMP updated_at
