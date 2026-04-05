@@ -1,6 +1,6 @@
 # Parking Lot Management System
 
-A full-stack web application to manage parking lots, slots, bookings, and payments — built with FastAPI, Next.js, and MongoDB.
+A full-stack monorepo application to manage parking lots, slots, bookings, and payments. 
 
 ---
 
@@ -12,16 +12,16 @@ A full-stack web application to manage parking lots, slots, bookings, and paymen
 
 ---
 
-## Tech Stack
+## Project Structure
 
-| Layer           | Technology                                        |
-| --------------- | ------------------------------------------------- |
-| Frontend        | Next.js 14 (App Router), TypeScript, Tailwind CSS |
-| Backend         | Python, FastAPI                                   |
-| Database        | MongoDB (Async ODM: Beanie / Motor)               |
-| Cache           | Redis                                             |
-| Payments        | Stripe                                            |
-| Auth            | JWT (JSON Web Tokens)                             |
-| Background jobs | Celery                                            |
+This project is structured as a monorepo using **Turborepo** and **Bun**:
 
----
+```text
+parking-management-system/
+├── apps/
+│   ├── web/        # Frontend web application (TanStack Start)
+│   └── api/        # Backend server (FastAPI, Python)
+├── packages/       # Shared configurations (eslint, typescript configs)
+├── diagrams/       # Mermaid.js architecture diagrams
+├── docs/           # System documentation (SDLC, OOP Concepts)
+└── package.json    # Root workspace configuration
