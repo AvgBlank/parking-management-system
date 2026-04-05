@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
+import { ApiResponseFactory } from "@/shared/utils/responseFactory";
 
 class PaymentController {
   public processPayment = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      res.status(200).json({ message: "Process payment not implemented yet" });
+      ApiResponseFactory.success(res, "Process payment not implemented yet");
     } catch (error) {
       next(error);
     }
