@@ -1,29 +1,27 @@
 x-db-env: &db-env
-  DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@db:5432/parking-management}
+  DATABASE_URL: ${DATABASE_URL:-mongodb://mongo:27017/parking-management}
 
 services:
   db:
     profiles: ["localdb"]
-    image: postgres:16-alpine
+    image: mongo:6-jammy
     restart: unless-stopped
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: parking-management
+      MONGO_INITDB_DATABASE: parking-management
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mongo_data:/data/db
     ports:
-      - 5434:5432
+      - 27017:27017
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 2s
-      timeout: 2s
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
       retries: 5
     networks:
       - parking-management
 
 volumes:
-  postgres_data: null
+  mongo_data: null
 networks:
   parking-management:
     driver: bridge
