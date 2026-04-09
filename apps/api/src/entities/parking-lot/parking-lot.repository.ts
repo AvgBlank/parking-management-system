@@ -6,6 +6,7 @@ export interface IParkingLotRepository {
     name: string;
     address: string;
   }): Promise<DBParkingLot>;
+  deleteParkingLot(parkingLotId: string): Promise<void>;
 }
 
 export class PrismaParkingLotRepository implements IParkingLotRepository {
@@ -28,5 +29,11 @@ export class PrismaParkingLotRepository implements IParkingLotRepository {
     });
 
     return newParkingLot;
+  }
+
+  public async deleteParkingLot(parkingLotId: string): Promise<void> {
+    await prisma.parkingLot.deleteMany({
+      where: { id: parkingLotId },
+    });
   }
 }

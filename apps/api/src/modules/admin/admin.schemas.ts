@@ -4,6 +4,10 @@ export const createFloorSchema = z.object({
   name: z.string().min(1, "Name is required"),
 });
 
+export const idSchema = z.object({
+  id: z.uuid().min(1, "ID is required"),
+});
+
 export const createSlotSchema = z.object({
   slotCode: z.string().min(1, "Slot code is required"),
   slotType: z

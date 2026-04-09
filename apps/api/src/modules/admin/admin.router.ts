@@ -8,7 +8,7 @@ const { adminController, adminAuthenticate } = createAdminModule();
 
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
-  max: env.get("NODE_ENV") === "production" ? 40 : 10000,
+  max: env.get("NODE_ENV") === "production" ? 200 : 10000,
   message: {
     error: "Too many requests, please try again later.",
   },
@@ -19,8 +19,11 @@ const adminRouter = Router()
   .use(limiter)
   .use(adminAuthenticate)
   .get("/user", adminController.getUsers)
-  .post("/parking-lot", adminController.createParkingLot)
   .post("/floor", adminController.createFloor)
-  .post("/slot", adminController.createSlot);
+  .delete("/floor/:id", adminController.deleteFloor)
+  .post("/slot", adminController.createSlot)
+  .delete("/slot/:id", adminController.deleteSlot)
+  .post("/parking-lot", adminController.createParkingLot)
+  .delete("/parking-lot/:id", adminController.deleteParkingLot);
 
 export default adminRouter;

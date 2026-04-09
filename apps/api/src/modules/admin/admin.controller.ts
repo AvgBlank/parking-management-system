@@ -5,8 +5,9 @@ import {
   createFloorSchema,
   createParkingLotSchema,
   createSlotSchema,
+  idSchema,
 } from "@/modules/admin/admin.schemas";
-import { CREATED } from "@/constants/httpStatusCodes";
+import { CREATED, OK } from "@/constants/httpStatusCodes";
 
 class AdminController {
   public constructor(private adminServce: IAdminService) {}
@@ -22,7 +23,17 @@ class AdminController {
 
     const newFloor = await this.adminServce.handleCreateFloor({ name });
 
-    res.status(CREATED).json({ floor: newFloor });
+    res
+      .status(CREATED)
+      .json({ floor: newFloor, message: "Created new floor successfully" });
+  };
+
+  public deleteFloor: RequestHandler = async (req, res) => {
+    const { id } = idSchema.parse(req.body);
+
+    await this.adminServce.handleDeleteFloor(id);
+
+    res.status(OK).json({ message: "Deleted floor successfully" });
   };
 
   public createSlot: RequestHandler = async (req, res) => {
@@ -37,7 +48,17 @@ class AdminController {
       floorId,
     });
 
-    res.status(CREATED).json({ slot: newSlot });
+    res
+      .status(CREATED)
+      .json({ slot: newSlot, message: "Created new slot successfully" });
+  };
+
+  public deleteSlot: RequestHandler = async (req, res) => {
+    const { id } = idSchema.parse(req.body);
+
+    await this.adminServce.handleDeleteSlot(id);
+
+    res.status(OK).json({ message: "Deleted slot successfully" });
   };
 
   public createParkingLot: RequestHandler = async (req, res) => {
@@ -48,7 +69,18 @@ class AdminController {
       address,
     });
 
-    res.status(CREATED).json({ parkingLot: newParkingLot });
+    res.status(CREATED).json({
+      parkingLot: newParkingLot,
+      message: "Created new parking lot successfully",
+    });
+  };
+
+  public deleteParkingLot: RequestHandler = async (req, res) => {
+    const { id } = idSchema.parse(req.body);
+
+    await this.adminServce.handleDeleteParkingLot(id);
+
+    res.status(OK).json({ message: "Deleted slot successfully" });
   };
 }
 

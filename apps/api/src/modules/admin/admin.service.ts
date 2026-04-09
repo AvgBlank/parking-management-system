@@ -10,6 +10,7 @@ import { DBUser } from "@/entities/user/user.types";
 export interface IAdminService {
   handleGetUsers(): Promise<DBUser[]>;
   handleCreateFloor(data: { name: string }): Promise<DBFloor>;
+  handleDeleteFloor(floorId: string): Promise<void>;
   handleCreateSlot(data: {
     floorId: string;
     slotCode: string;
@@ -21,10 +22,12 @@ export interface IAdminService {
       | undefined;
     status: "available" | "reserved" | "occupied" | "inactive" | undefined;
   }): Promise<DBSlot>;
+  handleDeleteSlot(slotId: string): Promise<void>;
   handleCreateParkingLot(data: {
     name: string;
     address: string;
   }): Promise<DBParkingLot>;
+  handleDeleteParkingLot(parkingLotId: string): Promise<void>;
 }
 
 class AdminService implements IAdminService {
@@ -41,6 +44,10 @@ class AdminService implements IAdminService {
 
   public async handleCreateFloor(data: { name: string }) {
     return this.floorRepository.createFloor(data);
+  }
+
+  public async handleDeleteFloor(floorId: string) {
+    return this.floorRepository.deleteFloor(floorId);
   }
 
   public async handleCreateSlot(data: {
@@ -64,6 +71,10 @@ class AdminService implements IAdminService {
     });
   }
 
+  public async handleDeleteSlot(slotId: string) {
+    return this.slotRepository.deleteSlot(slotId);
+  }
+
   public async handleCreateParkingLot(data: { name: string; address: string }) {
     const { name, address } = data;
 
@@ -71,6 +82,10 @@ class AdminService implements IAdminService {
       name,
       address,
     });
+  }
+
+  public async handleDeleteParkingLot(parkingLotId: string) {
+    return this.parkingLotRepository.deleteParkingLot(parkingLotId);
   }
 }
 

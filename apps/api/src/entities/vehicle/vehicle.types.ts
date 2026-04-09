@@ -1,11 +1,9 @@
-import { DBUser } from "@/entities/user/user.types";
-
 export interface DBVehicle {
   id: string;
-  licensePlate: string;
-  model: string;
 
-  user: DBUser;
+  licensePlate: string;
+  model: string | null;
+  userId: string;
 
   createdAt: Date;
   updatedAt: Date;

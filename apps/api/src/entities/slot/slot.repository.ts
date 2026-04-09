@@ -13,6 +13,7 @@ export interface ISlotRepository {
     status: "available" | "reserved" | "occupied" | "inactive" | undefined;
     floorId: string;
   }): Promise<DBSlot>;
+  deleteSlot(slotId: string): Promise<void>;
 }
 
 export class PrismaSlotRepository implements ISlotRepository {
@@ -43,6 +44,12 @@ export class PrismaSlotRepository implements ISlotRepository {
       include: {
         bookings: true,
       },
+    });
+  }
+
+  public async deleteSlot(slotId: string) {
+    await prisma.slot.deleteMany({
+      where: { id: slotId },
     });
   }
 }

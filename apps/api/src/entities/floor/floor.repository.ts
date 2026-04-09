@@ -4,12 +4,13 @@ import { DBFloor } from "@/entities/floor/floor.types";
 export interface IFloorRepository {
   getFloorsByLotId(id: string): Promise<DBFloor[]>;
   createFloor(data: { name: string }): Promise<DBFloor>;
+  deleteFloor(floorId: string): Promise<void>;
 }
 
 export class PrismaFloorRepository implements IFloorRepository {
   public constructor() {}
 
-  async getFloorsByLotId(id: string) {
+  public async getFloorsByLotId(id: string) {
     return await prisma.floor.findMany({
       where: {
         parkingLotId: id,
@@ -17,7 +18,7 @@ export class PrismaFloorRepository implements IFloorRepository {
     });
   }
 
-  async createFloor(data: { name: string; parkingLotId: string }) {
+  public async createFloor(data: { name: string; parkingLotId: string }) {
     const { name, parkingLotId } = data;
     const floors = await this.getFloorsByLotId(parkingLotId);
     const totalFloors = floors.length;
@@ -28,6 +29,12 @@ export class PrismaFloorRepository implements IFloorRepository {
         level: totalFloors + 1,
         parkingLotId: parkingLotId,
       },
+    });
+  }
+
+  public async deleteFloor(floorId: string) {
+    await prisma.floor.deleteMany({
+      where: { id: floorId },
     });
   }
 }
