@@ -39,7 +39,7 @@ export default function Sidebar() {
           icon={<CalendarCheck size={20} />}
           label="Live Bookings"
         />
-        <SidebarLink to="/" icon={<Car size={20} />} label="Vehicles" />
+        <SidebarLink to="/vehicles" icon={<Car size={20} />} label="Vehicles" />
         <SidebarLink to="/" icon={<Map size={20} />} label="Floors & Slots" />
 
         <div className="text-xs font-semibold text-[var(--sea-ink-soft)] uppercase tracking-wider mb-2 px-3 mt-8">
@@ -54,9 +54,9 @@ export default function Sidebar() {
 
       <div className="p-4 border-t border-[var(--line)] space-y-1.5">
         <SidebarLink
-          to="/"
+          to="/admin-tools"
           icon={<Settings size={20} />}
-          label="System Settings"
+          label="Admin Tools"
         />
         <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-red-400 transition-all hover:bg-red-500/10 active:scale-95">
           <LogOut size={20} /> <span>Sign Out</span>
