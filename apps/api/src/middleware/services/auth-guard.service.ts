@@ -1,7 +1,7 @@
 import { UNAUTHORIZED } from "@/constants/httpStatusCodes";
 
-import { ISessionRepository } from "@/modules/auth/repositories/session.repository";
-import { ITokenService } from "@/modules/auth/services/token.service";
+import { ISessionRepository } from "@/entities/session/session.repository";
+import { ITokenService } from "@/services/token.service";
 import AppError, { AppErrorCode } from "@/utils/AppError";
 
 export interface IAuthGuardService {
@@ -10,6 +10,8 @@ export interface IAuthGuardService {
       id: string;
       name: string;
       email: string;
+      phone: string;
+      role: "driver" | "admin";
       picture: string | null;
     };
     session: {
@@ -68,6 +70,8 @@ export class AuthGuardService implements IAuthGuardService {
         id: session.user.id,
         name: session.user.name,
         email: session.user.email,
+        phone: session.user.phone,
+        role: session.user.role,
         picture: session.user.picture,
       },
       session: {

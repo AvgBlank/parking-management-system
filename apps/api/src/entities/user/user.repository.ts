@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
-import { DBUser, DBUserWithPassword } from "@/modules/user/user.types";
+import { DBUser, DBUserWithPassword } from "@/entities/user/user.types";
 
 export interface IUserRepository {
+  getAllUsers(): Promise<DBUser[]>;
   getByEmail(email: string): Promise<DBUser | null>;
   getByEmailWithPassword(email: string): Promise<DBUserWithPassword | null>;
   create(data: {
@@ -15,6 +16,20 @@ export interface IUserRepository {
 }
 
 export class PrismaUserRepository implements IUserRepository {
+  public async getAllUsers() {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        role: true,
+        picture: true,
+      },
+    });
+    return users;
+  }
+
   public async getByEmail(email: string) {
     const user = await prisma.user.findUnique({
       where: { email },
@@ -23,6 +38,7 @@ export class PrismaUserRepository implements IUserRepository {
         name: true,
         email: true,
         phone: true,
+        role: true,
         picture: true,
       },
     });
@@ -37,6 +53,7 @@ export class PrismaUserRepository implements IUserRepository {
         name: true,
         email: true,
         phone: true,
+        role: true,
         password: true,
         picture: true,
       },
@@ -57,6 +74,7 @@ export class PrismaUserRepository implements IUserRepository {
         name: true,
         email: true,
         phone: true,
+        role: true,
         picture: true,
       },
     });
@@ -76,6 +94,7 @@ export class PrismaUserRepository implements IUserRepository {
         name: true,
         email: true,
         phone: true,
+        role: true,
         picture: true,
       },
     });

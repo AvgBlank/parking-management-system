@@ -3,14 +3,14 @@ import { AuthMiddleware } from "@/middleware/auth.middleware";
 import { AuthGuardService } from "@/middleware/services/auth-guard.service";
 import AuthController from "@/modules/auth/auth.controller";
 import AuthService from "@/modules/auth/auth.service";
-import { PrismaSessionRepository } from "@/modules/auth/repositories/session.repository";
+import { PrismaSessionRepository } from "@/entities/session/session.repository";
 import { UaParserDeviceService } from "@/modules/auth/services/device.service";
 import { GoogleOAuthService } from "@/modules/auth/services/google.service";
 import { Argon2HashService } from "@/modules/auth/services/hash.service";
 import { IpApiNetworkService } from "@/modules/auth/services/network.service";
 import { SessionService } from "@/modules/auth/services/session.service";
-import { JoseTokenService } from "@/modules/auth/services/token.service";
-import { PrismaUserRepository } from "@/modules/user/user.repository";
+import { JoseTokenService } from "@/services/token.service";
+import { PrismaUserRepository } from "@/entities/user/user.repository";
 
 export function createAuthModule() {
   const userRepository = new PrismaUserRepository();

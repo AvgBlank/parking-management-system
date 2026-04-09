@@ -1,5 +1,5 @@
 import { UNAUTHORIZED } from "@/constants/httpStatusCodes";
-import { authSchema } from "@/modules/auth/auth.schemas";
+import { authSchema } from "@/schemas/auth.schema";
 import { RequestHandler } from "express";
 
 import AppError, { AppErrorCode } from "@/utils/AppError";
@@ -7,7 +7,10 @@ import AppError, { AppErrorCode } from "@/utils/AppError";
 import { IAuthGuardService } from "@/middleware/services/auth-guard.service";
 
 export class AuthMiddleware {
-  public constructor(private authGuardService: IAuthGuardService) {}
+  public constructor(
+    private authGuardService: IAuthGuardService,
+    private admin?: boolean,
+  ) {}
 
   public authenticate: RequestHandler = async (req, _res, next) => {
     // Validate Authorization header
@@ -30,6 +33,15 @@ export class AuthMiddleware {
 
     // Authenticate user and session using AuthGuardService
     const { user, session } = await this.authGuardService.authenticate(token);
+
+    // Check for admin role if required
+    if (this.admin && user.role !== "admin") {
+      throw new AppError(
+        UNAUTHORIZED,
+        "Admin access required",
+        AppErrorCode.AdminAccessRequired,
+      );
+    }
 
     // Attach user and session to request object
     req.user = user;

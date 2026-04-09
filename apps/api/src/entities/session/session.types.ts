@@ -1,4 +1,4 @@
-import { DBUser } from "@/modules/user/user.types";
+import { DBUser } from "@/entities/user/user.types";
 
 export type DBSession = {
   userId: string;

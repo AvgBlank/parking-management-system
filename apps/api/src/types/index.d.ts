@@ -5,6 +5,8 @@ declare global {
         id: string;
         name: string;
         email: string;
+        phone: string;
+        role: "driver" | "admin";
         picture: string | null;
       };
       session?: {

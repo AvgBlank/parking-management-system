@@ -1,5 +1,5 @@
 import { thirtyDaysFromNow } from "@/constants/dates";
-import { ISessionRepository } from "@/modules/auth/repositories/session.repository";
+import { ISessionRepository } from "@/entities/session/session.repository";
 import { IDeviceService } from "@/modules/auth/services/device.service";
 import { INetworkService } from "@/modules/auth/services/network.service";
 

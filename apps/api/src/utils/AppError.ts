@@ -3,6 +3,7 @@ import HttpStatusCode from "@/constants/httpStatusCodes";
 export const enum AppErrorCode {
   InvalidAccessToken = "InvalidAccessToken",
   AuthError = "AuthError",
+  AdminAccessRequired = "AdminAccessRequired",
 }
 
 class AppError extends Error {

@@ -3,7 +3,7 @@ import {
   DBSession,
   DBSessionId,
   DBSessionWithUser,
-} from "@/modules/auth/types/session.types";
+} from "@/entities/session/session.types";
 
 export interface ISessionRepository {
   create(data: DBSession): Promise<DBSessionId>;
@@ -31,6 +31,7 @@ export class PrismaSessionRepository implements ISessionRepository {
             name: true,
             email: true,
             phone: true,
+            role: true,
             picture: true,
           },
         },

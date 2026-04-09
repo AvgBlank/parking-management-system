@@ -1,13 +1,13 @@
 import { CONFLICT, UNAUTHORIZED } from "@/constants/httpStatusCodes";
 
 import { thirtyDaysFromNow, twentyFourHours } from "@/constants/dates";
-import { ISessionRepository } from "@/modules/auth/repositories/session.repository";
+import { ISessionRepository } from "@/entities/session/session.repository";
 import { IGoogleOAuthService } from "@/modules/auth/services/google.service";
 import { IHashService } from "@/modules/auth/services/hash.service";
 import { ISessionService } from "@/modules/auth/services/session.service";
-import { ITokenService } from "@/modules/auth/services/token.service";
-import { IUserRepository } from "@/modules/user/user.repository";
-import { DBUser } from "@/modules/user/user.types";
+import { ITokenService } from "@/services/token.service";
+import { IUserRepository } from "@/entities/user/user.repository";
+import { DBUser } from "@/entities/user/user.types";
 import AppError, { AppErrorCode } from "@/utils/AppError";
 
 export interface IAuthService {

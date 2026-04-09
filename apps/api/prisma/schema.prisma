@@ -24,6 +24,9 @@ model User {
     updatedAt DateTime @updatedAt
 
     sessions Session[]
+    vehicles Vehicle[]
+    bookings Booking[]
+    payments Payment[]
 }
 
 model Session {
@@ -37,16 +40,144 @@ model Session {
     location  String
     ipAddress String
 
-    userId String
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
     expiresAt    DateTime
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
     lastActiveAt DateTime @default(now())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Floor {
+    id String @id @default(uuid())
+
+    name  String
+    level Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    parkingLot   ParkingLot @relation(fields: [parkingLotId], references: [id])
+    parkingLotId String
+
+    slots Slot[]
+}
+
+model Slot {
+    id String @id @default(uuid())
+
+    slotCode String
+    slotType SlotType @default(standard)
+
+    status SlotStatus @default(available)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    floorId String
+    floor   Floor  @relation(fields: [floorId], references: [id], onDelete: Cascade)
+
+    bookings Booking[]
+}
+
+model ParkingLot {
+    id String @id @default(uuid())
+
+    name    String
+    address String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    floors Floor[]
+}
+
+model Vehicle {
+    id String @id @default(uuid())
+
+    licensePlate String
+    model        String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    bookings Booking[]
+}
+
+model Booking {
+    id String @id @default(uuid())
+
+    startTime DateTime
+    endTime   DateTime
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    status BookingStatus @default(pending)
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    vehicleId String
+    vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+    slotId String
+    slot   Slot   @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+    payments Payment[]
+}
+
+model Payment {
+    id String @id @default(uuid())
+
+    amount Float
+    status PaymentStatus @default(pending)
+
+    createdAt DateTime  @default(now())
+    paidAt    DateTime?
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    bookingId String
+    booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
     driver
     admin
+}
+
+enum SlotType {
+    standard
+    compact
+    handicapped
+    ev_charging
+}
+
+enum SlotStatus {
+    available
+    reserved
+    occupied
+    inactive
+}
+
+enum BookingStatus {
+    pending
+    confirmed
+    active
+    completed
+    cancelled
+    expired
+}
+
+enum PaymentStatus {
+    pending
+    completed
+    failed
+    refunded
 }
