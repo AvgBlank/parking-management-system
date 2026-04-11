@@ -14,7 +14,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev",
-    "db:migrate:deploy": "prisma migrate deploy"
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed"
   },
   "dependencies": {
     "argon2": "^0.44.0",
@@ -40,5 +41,8 @@
     "dotenv": "^17.3.1",
     "eslint": "^10.1.0",
     "typescript": "^5.9.3"
+  },
+  "prisma": {
+    "seed": "bun prisma/seed.ts"
   }
 }

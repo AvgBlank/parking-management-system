@@ -1,6 +1,3 @@
-x-db-env: &db-env
-  DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@db:5432/parking-management}
-
 services:
   db:
     profiles: ["localdb"]
