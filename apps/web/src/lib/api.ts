@@ -1,4 +1,7 @@
-const API_BASE_URL = "http://localhost:8000/api"; // Default dev server URL, adjust based on env if needed.
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const API_PREFIX = "/api";
+const API_URL = API_BASE_URL + API_PREFIX;
 
 export async function fetchApi(endpoint: string, options: RequestInit = {}) {
   const token = localStorage.getItem("token"); // Simple auth token stored from login
@@ -9,7 +12,7 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
     ...options.headers,
   };
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers,
   });

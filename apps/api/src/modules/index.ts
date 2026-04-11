@@ -5,8 +5,8 @@ import adminRouter from "@/modules/admin/admin.router";
 import vehicleRouter from "@/modules/vehicle/vehicle.router";
 
 const router = Router()
-  .use("/api/auth", authRouter)
-  .use("/api/admin", adminRouter)
-  .use("/api/vehicle", vehicleRouter);
+  .use("/auth", authRouter)
+  .use("/admin", adminRouter)
+  .use("/vehicle", vehicleRouter);
 
 export default router;

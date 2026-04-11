@@ -8,7 +8,7 @@ async function main() {
   const app = new App(
     [
       {
-        path: "/",
+        path: "/api",
         router,
       },
     ],
