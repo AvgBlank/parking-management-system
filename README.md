@@ -29,11 +29,11 @@ parking-management-system/
 
 ---
 
-## Setup & Running
+## Setup & Running:
 
 This project provides a convenient Bash script `scripts/setup.sh` that checks prerequisites, copies environment files, installs dependencies, brings up the database via Docker, and runs migrations automatically.
 
-### Prerequisites
+### Prerequisites:
 - [Bun](https://bun.sh/) must be installed.
 - [Docker](https://docs.docker.com/get-docker/) & Docker Compose plugin must be running locally.
 

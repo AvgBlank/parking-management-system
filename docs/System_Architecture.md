@@ -42,4 +42,4 @@ Since TanStack enables server-first executions, interacting with Client objects 
 Rather than executing huge client component conditionals depending on user states, the React tree cleanly splits layouts early based on the `role` parsed from localized Storage. Admins map to a wide system-view `AdminDashboard` layout, while Drivers load a sandboxed `DriverDashboard` directly on the `/` root. 
 
 ### D. CSS Design Tokenization
-Minimalist UI boundaries are achieved without massive external libraries by isolating thematic colors into global CSS tokens (`index.css` -> `--sea-ink`, `--surface-strong`). This facilitates rapid native light/dark toggle mappings.
+Minimalist UI boundaries are achieved without massive external libraries by isolating thematic colors into global CSS tokens (`index.css` -> `--sea-ink`, `--surface-strong`). This facilitates rapid native light/ dark toggle mappings.
