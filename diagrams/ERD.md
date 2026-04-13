@@ -2,83 +2,99 @@
 
 ```mermaid
 erDiagram
-    USERS ||--o{ BOOKINGS : makes
-    USERS ||--o| VEHICLES : registers
-    VEHICLES ||--o{ BOOKINGS : "appears in"
-    PARKING_LOTS ||--o{ FLOORS : has
-    FLOORS ||--o{ SLOTS : contains
-    SLOTS ||--o{ BOOKINGS : has
-    BOOKINGS ||--o| PAYMENTS : has
+    User ||--o{ Session : authenticates
+    User ||--o{ Booking : makes
+    User ||--o{ Vehicle : owns
+    User ||--o{ Payment : pays
+    Vehicle ||--o{ Booking : "used in"
+    ParkingLot ||--o{ Floor : has
+    Floor ||--o{ Slot : contains
+    Slot ||--o{ Booking : reserved_for
+    Booking ||--o{ Payment : generates
 
-    USERS {
-        ObjectId _id PK
+    User {
+        String id PK
         String name
         String email "UNIQUE"
-        String phone
-        String password_hash
+        String phone "UNIQUE"
+        String password
+        String picture
         Enum role "driver, admin"
-        Boolean is_active
-        DateTime created_at
-        DateTime updated_at
+        Boolean isActive
+        DateTime createdAt
+        DateTime updatedAt
     }
 
-    VEHICLES {
-        ObjectId _id PK
-        ObjectId user_id FK
-        String plate_number "UNIQUE"
-        String vehicle_type
+    Session {
+        String id PK
+        String userId FK
+        String userAgent
+        String browser
+        String os
+        String device
+        String location
+        String ipAddress
+        DateTime expiresAt
+        DateTime lastActiveAt
+        DateTime createdAt
+        DateTime updatedAt
+    }
+
+    Vehicle {
+        String id PK
+        String userId FK
+        String licensePlate
         String model
-        DateTime created_at
+        DateTime createdAt
+        DateTime updatedAt
     }
 
-    PARKING_LOTS {
-        ObjectId _id PK
+    ParkingLot {
+        String id PK
         String name
         String address
-        Decimal price_per_hour
-        Integer total_floors
-        Boolean is_active
-        DateTime created_at
+        DateTime createdAt
+        DateTime updatedAt
     }
 
-    FLOORS {
-        ObjectId _id PK
-        ObjectId lot_id FK
-        Integer floor_number
-        String label
-        DateTime created_at
+    Floor {
+        String id PK
+        String parkingLotId FK
+        String name
+        Int level
+        DateTime createdAt
+        DateTime updatedAt
     }
 
-    SLOTS {
-        ObjectId _id PK
-        ObjectId floor_id FK
-        String slot_code
-        Enum slot_type
+    Slot {
+        String id PK
+        String floorId FK
+        String slotCode
+        Enum slotType
         Enum status
-        DateTime created_at
-        DateTime updated_at
+        DateTime createdAt
+        DateTime updatedAt
     }
 
-    BOOKINGS {
-        ObjectId _id PK
-        ObjectId user_id FK
-        ObjectId slot_id FK
-        ObjectId vehicle_id FK
-        DateTime start_time
-        DateTime end_time
+    Booking {
+        String id PK
+        String userId FK
+        String slotId FK
+        String vehicleId FK
+        DateTime startTime
+        DateTime endTime
         Enum status
-        Decimal total_amount
-        DateTime created_at
-        DateTime updated_at
+        DateTime createdAt
+        DateTime updatedAt
     }
 
-    PAYMENTS {
-        ObjectId _id PK
-        ObjectId booking_id FK "UNIQUE"
-        String stripe_payment_id
-        Decimal amount
+    Payment {
+        String id PK
+        String bookingId FK
+        String userId FK
+        Float amount
         Enum status
-        DateTime paid_at
-        DateTime created_at
+        DateTime paidAt
+        DateTime createdAt
     }
 ```
