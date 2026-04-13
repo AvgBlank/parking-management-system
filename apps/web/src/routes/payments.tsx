@@ -8,9 +8,9 @@ import {
   RefreshCw,
   TrendingUp,
 } from "lucide-react";
+import { EmptyState } from "../components/EmptyState";
 import { adminApi } from "../lib/api";
 import type { DashboardStats, RecentBooking } from "../lib/api";
-import { EmptyState } from "../components/EmptyState";
 
 export const Route = createFileRoute("/payments")({ component: PaymentsPage });
 

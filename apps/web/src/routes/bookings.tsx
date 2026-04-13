@@ -1,9 +1,9 @@
 import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { RefreshCw } from "lucide-react";
+import { EmptyState } from "../components/EmptyState";
 import { adminApi } from "../lib/api";
 import type { RecentBooking } from "../lib/api";
-import { EmptyState } from "../components/EmptyState";
 
 export const Route = createFileRoute("/bookings")({ component: BookingsPage });
 

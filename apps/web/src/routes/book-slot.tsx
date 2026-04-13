@@ -1,9 +1,9 @@
 import * as React from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Car, CheckCircle2, CreditCard, MapPin } from "lucide-react";
+import { EmptyState } from "../components/EmptyState";
 import { bookingApi, vehicleApi } from "../lib/api";
 import type { Vehicle } from "../lib/api";
-import { EmptyState } from "../components/EmptyState";
 
 export const Route = createFileRoute("/book-slot")({
   component: BookSlotPage,

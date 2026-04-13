@@ -1,9 +1,9 @@
 import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Car, Plus, RefreshCw, Trash2 } from "lucide-react";
+import { EmptyState } from "../components/EmptyState";
 import { vehicleApi } from "../lib/api";
 import type { Vehicle } from "../lib/api";
-import { EmptyState } from "../components/EmptyState";
 
 export const Route = createFileRoute("/vehicles")({
   component: VehiclesComponent,
