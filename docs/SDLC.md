@@ -1,15 +1,5 @@
 # SDLC Plan — Parking Lot Management System
 
-## Model: Agile (Iterative Sprints)
-
-Agile was chosen because:
-
-- Requirements may evolve (e.g. adding EV charging slots, monthly passes)
-- Early working software is more valuable than complete documentation
-- The system can be demo-ed to stakeholders sprint by sprint
-
----
-
 ## Phase 1 — Planning
 
 **Goal:** Define scope, actors, and core features.
@@ -28,24 +18,14 @@ Agile was chosen because:
 - Auto-release slot if payment not made in 15 minutes
 - Admin dashboard for lot and slot management
 
-**Out of scope for MVP:**
-
-- Mobile app
-- Monthly subscription passes
-- License plate recognition
-- Dynamic pricing
-
----
-
 ## Phase 2 — System Design
 
 **Architecture:** 3-tier (Client → API → Database)
 
-**Design Patterns selected:**
+**Design Patterns selected (in routes, middleware, and services):**
 
-1. Observer Pattern — booking lifecycle events (notifications, slot updates, audit logs)
-2. Repository Pattern — decouples services from database queries
-3. Strategy Pattern (planned) — payment strategies (Stripe, cash, UPI)
+1. **Repository Pattern** — Services interact with the database through repository classes, abstracting data access and making it easier to swap or mock data sources.
+2. **Factory Pattern (where applicable)** — Used for creating service or middleware instances based on configuration or context.
 
 **OOP Principles applied:**
 | Principle | Where |
@@ -65,66 +45,3 @@ Agile was chosen because:
 | Dependency Inversion | Services depend on IRepository, not concrete Beanie Document classes |
 
 ---
-
-## Phase 3 — Implementation Sprints
-
-### Sprint 1 (Days 1–3): Foundation
-
-- [x] Folder structure
-- [x] Base models and class hierarchy
-- [x] Observer pattern implementation
-- [x] Repository interfaces + in-memory implementations
-- [x] ER diagram
-
-### Sprint 2 (Days 4–7): Core Backend
-
-- [ ] Beanie MongoDB Document models
-- [ ] Auth service (register, login, JWT)
-- [ ] Slot service with Redis cache
-- [ ] Booking service (create, cancel)
-
-### Sprint 3 (Days 8–11): Payments + Frontend Shell
-
-- [ ] Stripe payment integration
-- [ ] Celery task: auto-expire unpaid bookings
-- [ ] Next.js login and register pages
-- [ ] Driver slot grid and booking form
-
-### Sprint 4 (Days 12–14): Admin + Polish
-
-- [ ] Admin dashboard (lots, slots, reports)
-- [ ] Unit tests for BookingService
-- [ ] Error handling and input validation
-- [ ] README updated with API docs
-
----
-
-## Phase 4 — Testing
-
-**Unit tests:** BookingService, SlotService, AuthService
-**Integration tests:** Full booking flow (reserve → pay → confirm)
-**Manual testing:** Swagger UI for all endpoints
-
-**Test strategy:**
-
-- In-memory repositories used in unit tests (no DB dependency)
-- pytest + pytest-asyncio for async FastAPI routes
-
----
-
-## Phase 5 — Deployment (Post-MVP)
-
-- Docker Compose for local
-- GitHub Actions CI (lint + test on every push)
-- Target: Railway or Render for backend, Vercel for frontend
-
----
-
-## Progress Tracking
-
-| Milestone                     | Target Date  | Status      |
-| ----------------------------- | ------------ | ----------- |
-| Repo setup + base classes     | Day 1        | Done        |
-| Core backend (auth + booking) | Day 7        | In progress |
-| 40% core functionality        | 10 April     | Target      |
-| Full MVP                      | End of April | Planned     |
