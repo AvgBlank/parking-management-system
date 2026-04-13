@@ -9,6 +9,113 @@ export const Route = createFileRoute("/book-slot")({
   component: BookSlotPage,
 });
 
+// ── Slot type metadata ────────────────────────────────────────────────────────
+
+type SlotType = "standard" | "compact" | "handicapped" | "ev_charging";
+
+const SLOT_TYPE_META: Record<
+  SlotType,
+  { label: string; icon: React.ReactNode; color: string; bg: string }
+> = {
+  standard: {
+    label: "Standard",
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        className="w-4 h-4"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M9 17V7h4a3 3 0 0 1 0 6H9" />
+      </svg>
+    ),
+    color: "text-indigo-500",
+    bg: "bg-indigo-500/10",
+  },
+  compact: {
+    label: "Compact",
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        className="w-4 h-4"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v5" />
+        <circle cx="16" cy="17" r="2" />
+        <circle cx="7" cy="17" r="2" />
+      </svg>
+    ),
+    color: "text-cyan-500",
+    bg: "bg-cyan-500/10",
+  },
+  handicapped: {
+    label: "Accessible",
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        className="w-4 h-4"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="4" r="1" />
+        <path d="M9 9h6l-1 7h-4" />
+        <path d="M8 21a5 5 0 0 1 8 0" />
+        <line x1="12" y1="10" x2="12" y2="15" />
+      </svg>
+    ),
+    color: "text-blue-500",
+    bg: "bg-blue-500/10",
+  },
+  ev_charging: {
+    label: "EV Charging",
+    icon: (
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        className="w-4 h-4"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+      </svg>
+    ),
+    color: "text-emerald-500",
+    bg: "bg-emerald-500/10",
+  },
+};
+
+function SlotTypeBadge({ type }: { type: string }) {
+  const meta = SLOT_TYPE_META[type as SlotType] ?? {
+    label: type,
+    icon: null,
+    color: "text-[var(--sea-ink-soft)]",
+    bg: "bg-[var(--line)]",
+  };
+  return (
+    <span
+      className={`inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full ${meta.color} ${meta.bg}`}
+    >
+      {meta.icon}
+      {meta.label}
+    </span>
+  );
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
 function BookSlotPage() {
   const navigate = useNavigate();
   const [slots, setSlots] = React.useState<Array<any>>([]);
@@ -117,6 +224,7 @@ function BookSlotPage() {
               <h2 className="text-lg font-bold text-[var(--sea-ink)] mb-4 flex items-center gap-2">
                 <MapPin className="text-indigo-500" /> Select Available Spot
               </h2>
+
               {slots.length === 0 ? (
                 <EmptyState
                   illustration="parking"
@@ -124,29 +232,67 @@ function BookSlotPage() {
                   description="Every parking slot is currently reserved or occupied. Check back shortly — spots free up regularly."
                 />
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {slots.map((slot) => (
-                    <button
-                      key={slot.id}
-                      onClick={() => setSelectedSlot(slot.id)}
-                      className={`p-3 rounded-xl border text-left transition-all ${
-                        selectedSlot === slot.id
-                          ? "border-indigo-500 bg-indigo-500/10 shadow-[0_0_0_2px_rgba(79,70,229,0.2)]"
-                          : "border-[var(--line)] hover:border-indigo-500/50 bg-[var(--surface)]"
-                      }`}
-                    >
-                      <div className="text-lg font-bold text-[var(--sea-ink)]">
-                        {slot.slotCode}
-                      </div>
-                      <div className="text-xs text-[var(--sea-ink-soft)] mt-1 truncate">
-                        Floor {slot.floor.level} ({slot.floor.parkingLot.name})
-                      </div>
-                      <div className="text-xs mt-2 uppercase font-semibold text-indigo-500/80">
-                        {slot.slotType}
-                      </div>
-                    </button>
-                  ))}
-                </div>
+                <>
+                  {/* Slot grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {slots.map((slot) => {
+                      const meta =
+                        SLOT_TYPE_META[slot.slotType as SlotType] ??
+                        SLOT_TYPE_META.standard;
+                      const isSelected = selectedSlot === slot.id;
+                      return (
+                        <button
+                          key={slot.id}
+                          onClick={() => setSelectedSlot(slot.id)}
+                          className={`p-3 rounded-xl border text-left transition-all ${
+                            isSelected
+                              ? "border-indigo-500 bg-indigo-500/10 shadow-[0_0_0_2px_rgba(79,70,229,0.2)]"
+                              : "border-[var(--line)] hover:border-indigo-500/50 bg-[var(--surface)]"
+                          }`}
+                        >
+                          {/* Icon + slot code row */}
+                          <div className="flex items-center gap-2 mb-2">
+                            <div
+                              className={`p-1.5 rounded-lg ${meta.bg} ${meta.color}`}
+                            >
+                              {meta.icon}
+                            </div>
+                            <span className="text-base font-bold text-[var(--sea-ink)] font-mono">
+                              {slot.slotCode}
+                            </span>
+                          </div>
+
+                          {/* Location */}
+                          <div className="text-xs text-[var(--sea-ink-soft)] truncate mb-2">
+                            Floor {slot.floor.level} &middot;{" "}
+                            {slot.floor.parkingLot.name}
+                          </div>
+
+                          {/* Type badge */}
+                          <SlotTypeBadge type={slot.slotType} />
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Legend */}
+                  <div className="mt-5 pt-4 border-t border-[var(--line)] flex flex-wrap gap-3">
+                    {(
+                      Object.entries(SLOT_TYPE_META) as [
+                        SlotType,
+                        (typeof SLOT_TYPE_META)[SlotType],
+                      ][]
+                    ).map(([key, meta]) => (
+                      <span
+                        key={key}
+                        className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${meta.color} ${meta.bg}`}
+                      >
+                        {meta.icon}
+                        {meta.label}
+                      </span>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           </div>
@@ -211,7 +357,7 @@ function BookSlotPage() {
                 disabled={!selectedSlot || !selectedVehicle}
                 className="w-full mt-6 py-3 px-4 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-500/50 disabled:cursor-not-allowed text-white font-bold rounded-xl shadow-lg transition-all active:scale-[0.98] flex justify-center items-center gap-2"
               >
-                <CreditCard size={18} /> Book & Go to Payment
+                <CreditCard size={18} /> Book &amp; Go to Payment
               </button>
             </div>
           </div>
