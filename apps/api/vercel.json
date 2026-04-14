@@ -4,5 +4,11 @@
   "framework": "express",
   "installCommand": "bun install --frozen-lockfile",
   "buildCommand": "turbo run build",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/dist/src/index.js"
+    }
+  ]
 }
