@@ -2,7 +2,7 @@
 
 ## Entities and Relationships
 
-Here is the exact Mermaid Class Diagram modeled strictly 1:1 against the underlying PostgreSQL `schema.prisma` architecture. 
+Here is the exact Mermaid Class Diagram modeled strictly 1:1 against the underlying PostgreSQL `schema.prisma` architecture.
 
 It strips away all outdated MongoDB/Beanie abstractions and strictly reflects the exact Typescript ORM types (like UUIDs, native enums, and foreign key relations).
 
@@ -122,4 +122,3 @@ CREATE TYPE SlotStatus     AS ENUM ('available', 'reserved', 'occupied', 'inacti
 CREATE TYPE BookingStatus  AS ENUM ('pending', 'confirmed', 'active', 'completed', 'cancelled', 'expired');
 CREATE TYPE PaymentStatus  AS ENUM ('pending', 'completed', 'failed', 'refunded');
 ```
-

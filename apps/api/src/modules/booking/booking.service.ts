@@ -8,10 +8,13 @@ export interface IBookingService {
     vehicleId: string,
     slotId: string,
     startTime: Date,
-    endTime: Date
+    endTime: Date,
   ): Promise<{ booking: Booking; payment: Payment }>;
   handleGetMyBookings(userId: string): Promise<Booking[]>;
-  handlePayBooking(userId: string, bookingId: string): Promise<{ success: boolean }>;
+  handlePayBooking(
+    userId: string,
+    bookingId: string,
+  ): Promise<{ success: boolean }>;
 }
 
 class BookingService implements IBookingService {
@@ -35,7 +38,7 @@ class BookingService implements IBookingService {
     vehicleId: string,
     slotId: string,
     startTime: Date,
-    endTime: Date
+    endTime: Date,
   ) {
     // Basic verification that slot is available
     const slot = await prisma.slot.findUnique({ where: { id: slotId } });
@@ -44,7 +47,9 @@ class BookingService implements IBookingService {
     }
 
     // Check if vehicle belongs to user
-    const vehicle = await prisma.vehicle.findFirst({ where: { id: vehicleId, userId } });
+    const vehicle = await prisma.vehicle.findFirst({
+      where: { id: vehicleId, userId },
+    });
     if (!vehicle) {
       throw new Error("Vehicle not found or does not belong to user.");
     }
@@ -70,7 +75,7 @@ class BookingService implements IBookingService {
       // Generate a mock payment of $10.00
       const payment = await tx.payment.create({
         data: {
-          amount: 10.00,
+          amount: 10.0,
           status: "pending",
           userId,
           bookingId: booking.id,
@@ -104,10 +109,12 @@ class BookingService implements IBookingService {
     });
 
     if (!booking) throw new Error("Booking not found");
-    if (booking.status !== "pending") throw new Error("Booking is not pending payment");
+    if (booking.status !== "pending")
+      throw new Error("Booking is not pending payment");
 
     const pendingPayment = booking.payments.find((p) => p.status === "pending");
-    if (!pendingPayment) throw new Error("No pending payment found for booking");
+    if (!pendingPayment)
+      throw new Error("No pending payment found for booking");
 
     // Process payment (mock)
     await prisma.$transaction(async (tx) => {

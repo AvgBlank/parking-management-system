@@ -183,7 +183,9 @@ export default function BookingsPage() {
                 : "No parking bookings have been made yet. They will appear here once drivers start reserving spots."
             }
             actionLabel={statusFilter !== "all" ? "Clear filter" : undefined}
-            onAction={statusFilter !== "all" ? () => setStatusFilter("all") : undefined}
+            onAction={
+              statusFilter !== "all" ? () => setStatusFilter("all") : undefined
+            }
           />
         ) : (
           <div className="overflow-x-auto">

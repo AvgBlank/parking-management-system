@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  OK,
-  CREATED,
-  BAD_REQUEST,
-} from "@/constants/httpStatusCodes";
+import { OK, CREATED, BAD_REQUEST } from "@/constants/httpStatusCodes";
 import { IBookingService } from "./booking.service";
 import AppError from "@/utils/AppError";
 
 class BookingController {
   constructor(private bookingService: IBookingService) {}
 
-  public getAvailableSlots = async (_req: Request, res: Response, next: NextFunction) => {
+  public getAvailableSlots = async (
+    _req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
     try {
       const slots = await this.bookingService.handleGetAvailableSlots();
       res.status(OK).json({ slots });
@@ -19,7 +19,11 @@ class BookingController {
     }
   };
 
-  public createBooking = async (req: Request, res: Response, next: NextFunction) => {
+  public createBooking = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
     try {
       const userId = req.user?.id;
       if (!userId) throw new AppError(BAD_REQUEST, "User missing");
@@ -34,19 +38,28 @@ class BookingController {
         vehicleId,
         slotId,
         startTime,
-        endTime
+        endTime,
       );
       res.status(CREATED).json(result);
     } catch (error) {
       if (error instanceof Error) {
-        next(new AppError(BAD_REQUEST, error.message || "Failed to create booking"));
+        next(
+          new AppError(
+            BAD_REQUEST,
+            error.message || "Failed to create booking",
+          ),
+        );
       } else {
         next(new AppError(BAD_REQUEST, "Failed to create booking"));
       }
     }
   };
 
-  public getMyBookings = async (req: Request, res: Response, next: NextFunction) => {
+  public getMyBookings = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
     try {
       const userId = req.user?.id;
       if (!userId) throw new AppError(BAD_REQUEST, "User missing");
@@ -58,7 +71,11 @@ class BookingController {
     }
   };
 
-  public payBooking = async (req: Request, res: Response, next: NextFunction) => {
+  public payBooking = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => {
     try {
       const userId = req.user?.id;
       const id = req.params.id as string;
@@ -68,7 +85,9 @@ class BookingController {
       res.status(OK).json(result);
     } catch (error) {
       if (error instanceof Error) {
-        next(new AppError(BAD_REQUEST, error.message || "Failed to pay booking"));
+        next(
+          new AppError(BAD_REQUEST, error.message || "Failed to pay booking"),
+        );
       } else {
         next(new AppError(BAD_REQUEST, "Failed to pay booking"));
       }
