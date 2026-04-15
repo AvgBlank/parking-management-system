@@ -1,9 +1,13 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "bunVersion": "1.x",
-  "framework": "express",
   "installCommand": "bun install --frozen-lockfile",
   "buildCommand": "turbo run build",
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/src/index.js"
+    }
+  ]
 }
-
