@@ -71,28 +71,7 @@ class BookingController {
     }
   };
 
-  public payBooking = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) => {
-    try {
-      const userId = req.user?.id;
-      const id = req.params.id as string;
-      if (!userId) throw new AppError(BAD_REQUEST, "User missing");
-
-      const result = await this.bookingService.handlePayBooking(userId, id);
-      res.status(OK).json(result);
-    } catch (error) {
-      if (error instanceof Error) {
-        next(
-          new AppError(BAD_REQUEST, error.message || "Failed to pay booking"),
-        );
-      } else {
-        next(new AppError(BAD_REQUEST, "Failed to pay booking"));
-      }
-    }
-  };
 }
+
 
 export default BookingController;

@@ -11,10 +11,6 @@ export interface IBookingService {
     endTime: Date,
   ): Promise<{ booking: Booking; payment: Payment }>;
   handleGetMyBookings(userId: string): Promise<Booking[]>;
-  handlePayBooking(
-    userId: string,
-    bookingId: string,
-  ): Promise<{ success: boolean }>;
 }
 
 class BookingService implements IBookingService {
@@ -102,35 +98,7 @@ class BookingService implements IBookingService {
     });
   }
 
-  public async handlePayBooking(userId: string, bookingId: string) {
-    const booking = await prisma.booking.findFirst({
-      where: { id: bookingId, userId },
-      include: { payments: true },
-    });
-
-    if (!booking) throw new Error("Booking not found");
-    if (booking.status !== "pending")
-      throw new Error("Booking is not pending payment");
-
-    const pendingPayment = booking.payments.find((p) => p.status === "pending");
-    if (!pendingPayment)
-      throw new Error("No pending payment found for booking");
-
-    // Process payment (mock)
-    await prisma.$transaction(async (tx) => {
-      await tx.payment.update({
-        where: { id: pendingPayment.id },
-        data: { status: "completed", paidAt: new Date() },
-      });
-
-      await tx.booking.update({
-        where: { id: bookingId },
-        data: { status: "confirmed" }, // Confirm the booking
-      });
-    });
-
-    return { success: true };
-  }
 }
+
 
 export default BookingService;

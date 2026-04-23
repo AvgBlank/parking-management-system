@@ -204,5 +204,5 @@ export const bookingApi = {
     fetchApi("/booking/my-bookings"),
 
   payBooking: (id: string) =>
-    fetchApi(`/booking/${id}/pay`, { method: "POST" }),
+    fetchApi(`/payment/${id}/pay`, { method: "POST" }),
 };

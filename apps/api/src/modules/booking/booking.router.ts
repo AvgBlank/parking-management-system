@@ -19,7 +19,6 @@ const bookingRouter = Router()
   .use(authenticate)
   .get("/available-slots", bookingController.getAvailableSlots)
   .get("/my-bookings", bookingController.getMyBookings)
-  .post("/", bookingController.createBooking)
-  .post("/:id/pay", bookingController.payBooking);
+  .post("/", bookingController.createBooking);
 
 export default bookingRouter;
