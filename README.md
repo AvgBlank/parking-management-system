@@ -337,9 +337,9 @@ class Prisma {
 }
 ```
 
-### 2. Repository Pattern
+### 2. Strategy Pattern
 **Where:** `apps/api/src/entities/user/user.repository.ts`
-Encapsulates all database interactions (`SELECT`, `INSERT`) away from the main business logic so services are oblivious to Prisma.
+We use the Repository Pattern as a dynamic Strategy. The main logic interacts with abstract strategies (`IUserRepository`), allowing us to swap the database strategy (Prisma vs. Mock DB) at runtime without altering core logic.
 ```typescript
 export interface IUserRepository {
   getByEmail(email: string): Promise<DBUser | null>;
@@ -351,25 +351,31 @@ export class PrismaUserRepository implements IUserRepository {
 }
 ```
 
-### 3. Dependency Injection (IoC Container)
+### 3. Factory Pattern (IoC Containers)
 **Where:** `apps/api/src/modules/auth/auth.container.ts`
-Classes do not construct their own dependencies; they are built externally and injected via constructor arguments.
+Instead of having objects awkwardly construct their own dependencies, we use dedicated Container functions as abstract Factories. When the router spins up, the factory builds and wires all sub-services together.
 ```typescript
 export function createAuthModule() {
   const userRepository = new PrismaUserRepository(); 
-  const authService = new AuthService(userRepository); // Injected
+  const authService = new AuthService(userRepository); // Factory wired
   return { authService };
 }
 ```
 
-### 4. Chain of Responsibility Pattern (Middleware)
-**Where:** `apps/api/src/middleware/auth.middleware.ts`
-Requests flow through a sequential chain of validators (JWT validation, Role checks) before hitting the Controller.
+### 4. Adapter Pattern
+**Where:** `apps/api/src/middleware/services/token.service.ts`
+We use the Adapter Pattern to wrap the third-party `jose` JWT library. Our app only interacts with the generic `ITokenService` interface. The `JoseTokenService` adapts the complex, highly specific `jose` methods into standard `sign()` and `verify()` calls, ensuring we aren't heavily coupled to a specific external vendor.
 ```typescript
-const adminRouter = Router()
-  .use(authenticate)          // First Link: Are they logged in?
-  .use(requireAdmin)          // Second Link: Are they an admin?
-  .get("/", adminController)  // Terminal Link: Execute business logic
+export class JoseTokenService implements ITokenService {
+  // Adapts `jose.SignJWT` syntax into a simple string return
+  public async sign(payload: Record<string, unknown>, type: "ACCESS" | "REFRESH"): Promise<string> {
+    const secret = type === "ACCESS" ? this.accessSecret : this.refreshSecret;
+    return new SignJWT(payload)
+      .setProtectedHeader({ alg: "HS256" })
+      .setExpirationTime(this.getExpiration(type))
+      .sign(secret);
+  }
+}
 ```
 
 </details>
